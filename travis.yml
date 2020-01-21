@@ -1,6 +1,8 @@
 language: ruby
 rbenv:
   - 2.6.3
+before_script:
+  - psql -c 'create database community_shield_server_test;' -U postgres
 services:
   - postgresql
 addons:
