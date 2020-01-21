@@ -1,0 +1,9 @@
+language: ruby
+rbenv:
+  - 2.6.3
+install:
+  - bundle install
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database community_shield__server_test;' -U postgres
