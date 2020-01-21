@@ -2,7 +2,7 @@ language: ruby
 rvm:
   - 2.6.3
 before_script:
-  - psql -c 'create database community_shield_server_test;' -U postgres
+  - psql -c 'create database community_shield_server_test;' -U alexandrascott
 services:
   - postgresql
 addons:
