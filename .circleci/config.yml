@@ -21,6 +21,9 @@ jobs:
         name: Restore bundle cache
         key: community-shield-server-{{ checksum "Gemfile.lock" }}
 
+      # install bundler
+      - run: gem install bundler:2.1.4
+
       # Bundle install dependencies
       - run: bundle install --path vendor/bundle
 
