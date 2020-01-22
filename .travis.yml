@@ -2,7 +2,7 @@ language: ruby
 rvm:
   - 2.6.3
 before_install:
-  - psql -c 'create database community_shield_server_test;' -U postgres
+  - psql -h /tmp/ -c 'create database community_shield_server_test;' -U postgres
 addons:
   postgresql: "11.3"
 apt:
