@@ -1,23 +1,41 @@
-# Ruby CircleCI 2.1 configuration file
-#
-# Check https://circleci.com/docs/2.0/ruby/ for more details
-#
-version: 2.1
-
-
-orbs:
-  ruby: circleci/ruby@0.1.2 # Ruby orb registry: https://circleci.com/orbs/registry/orb/circleci/ruby
-
+version: 2
 jobs:
   build:
+    working_directory: ~/community-shield-server
     docker:
-      - image: circleci/ruby:2.6.3-stretch-node
+      - image: circleci/ruby:2.6.3
+        environment:
+          PGHOST: localhost
+          PGUSER: community-shield-server
+          RAILS_ENV: test
+      - image: postgres:11.3
+        environment:
+          POSTGRES_USER: alexandrascott
+          POSTGRES_DB: community-shield-server_test
+          POSTGRES_PASSWORD: ""
     steps:
       - checkout
-      - run:
-          name: Which bundler?
-          command: bundle -v
-      - gem install bundler:2.1.4
 
-# What to do next? Set up a test job. Please see
-# https://circleci.com/docs/2.0/configuration-reference/, for more  info on how to get started.
+      # Restore Cached Dependencies
+      - type: cache-restore
+        name: Restore bundle cache
+        key: community-shield-server-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
+
+      # Cache Dependencies
+      - type: cache-save
+        name: Store bundle cache
+        key: community-shield-server-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # Wait for DB
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      # Setup the database
+      - run: bundle exec rails db:setup
+
+      # Run the tests
+      - run: bundle exec rspec
