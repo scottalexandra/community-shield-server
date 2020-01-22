@@ -1,13 +1,8 @@
 language: ruby
 rvm:
   - 2.6.3
-install:
-  - gem install bundler:2.1.4
-  - bundle install
-before_script:
+before_install:
   - psql -c 'create database community_shield_server_test;' -U postgres
-services:
-  - postgresql
 addons:
   postgresql: "11.3"
 apt:
