@@ -6,11 +6,11 @@ jobs:
       - image: circleci/ruby:2.6.3
         environment:
           PGHOST: localhost
-          PGUSER: community-shield-server
+          PGUSER: postgres
           RAILS_ENV: test
       - image: postgres:11.3
         environment:
-          POSTGRES_USER: alexandrascott
+          POSTGRES_USER: postgres
           POSTGRES_DB: community-shield-server_test
           POSTGRES_PASSWORD: ""
     steps:
