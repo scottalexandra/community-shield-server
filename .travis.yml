@@ -1,8 +1,10 @@
 language: ruby
 rvm:
   - 2.6.3
-before_install:
-  - psql -h /tmp/ -c 'create database community_shield_server_test;' -U postgres
+before_script:
+  - psql -c 'create database community_shield_server_test;' -U postgres
+services:
+  - postgresql
 addons:
   postgresql: "11.3"
 apt:
@@ -11,7 +13,7 @@ apt:
     - postgresql-client-11
 env:
   global:
-  - PGPORT=5433
+  - PGPORT=5432
 script:
   - RAILS_ENV=test bundle exec rails db:reset db:migrate
   - bundle exec rspec
