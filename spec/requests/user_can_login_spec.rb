@@ -4,10 +4,11 @@ describe "user can login" do
   let!(:user) {create(:user)}
 
   context "with the correct credentials" do
-
     it "a user can login" do
       post '/api/v1/login', params: { email: user.email, password: user.password }
+
       expect(response).to be_successful
+
       user_data = JSON.parse(response.body, symbolize_names: true)
 
       expect(user_data[:data]).to be_a(Hash)
@@ -19,10 +20,10 @@ describe "user can login" do
 
   context "with incorrect credentials" do
     it "a user cannot login" do
-      post '/api/v1/login', params: { email: user.email, password: "nope"}
+      post '/api/v1/login', params: { email: 'user@email.com', password: "nope"}
 
       expect(response.status).to be(401)
-      
+
       error = JSON.parse(response.body, symbolize_names: true)
 
       expect(error[:error]).to eq("Email or password invalid. Please try again.")
