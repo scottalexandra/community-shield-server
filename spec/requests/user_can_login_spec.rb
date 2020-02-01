@@ -20,7 +20,7 @@ describe "user can login" do
 
   context "with incorrect credentials" do
     it "a user cannot login" do
-      post '/api/v1/login', params: { email: user.email, password: "nope"}
+      post '/api/v1/login', params: { email: 'user@email.com', password: "nope"}
 
       expect(response.status).to be(401)
 
